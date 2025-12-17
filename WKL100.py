@@ -37,19 +37,21 @@ class WKL100:
         return struct.unpack('>f', float_bytes)[0]
 
     # turn climate chamber on or off
-    async def activate(self, active: bool) -> None:
-        if active:
-            await self._write(32769, [0, 0, 0, 0, 1, 0, 0, 0])
-        else:
-            await self._write(32769, [0, 0, 0, 0, 0, 0, 0, 0])
+    async def activate(self, chamber: bool, humidity: bool = False) -> None:
+        state = 0
+        if chamber:
+            state += 1
+        if humidity:
+            state += 2
+        await self._write(32769, [0, 0, 0, 0, state, 0, 0, 0])
 
-    # set target temperature in °C
-    async def set_temperature(self, temp: float) -> None:
+    # set target temperature in °C, humidity in %rh
+    async def set_target(self, temp: float, hum: float = 50.0) -> None:
         t_val = self.float_to_regs(temp)
+        u_val = self.float_to_regs(hum)
         await self._write(32776,
-                          t_val + [0x0000, 0xc2a0, 0x0000, 0x433e, 0x0001, 0x0000, 0x4248, 0x0000, 0x0000, 0x0000,
-                                   0x42c8,
-                                   0x0002])
+                          t_val + [0x0000, 0xc2a0, 0x0000, 0x433e, 0x0001] +
+                          u_val + [0x0000, 0x0000, 0x0000, 0x42c8, 0x0002])
 
     # read temperature in °C
     async def get_temperature(self) -> float:
@@ -65,4 +67,3 @@ class WKL100:
     async def get_runtime(self) -> float:
         runtime_regs = await self._read(32800, 2)
         return self.reg_to_float(runtime_regs)
-

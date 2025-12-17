@@ -10,11 +10,11 @@ async def main():
     # read number of operating hours
     print(f'Chamber Runtime = {await chamber.get_runtime():.2f}h')
 
-    # set temperature
-    await chamber.set_temperature(42.3)
+    # set temperature and humidity
+    await chamber.set_target(42.3, 30)
 
     # turn chamber on
-    await chamber.activate(True)
+    await chamber.activate(True, True)
 
     # read and print temperature
     for i in range(10):
@@ -22,7 +22,7 @@ async def main():
         print(f'{await chamber.get_temperature():.2f}°C, {await chamber.get_humidity():.2f}%')
 
     # turn chamber off
-    await chamber.activate(False)
+    await chamber.activate(False, False)
 
 
 if __name__ == '__main__':
