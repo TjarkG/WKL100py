@@ -5,7 +5,7 @@ from WKL100 import WKL100
 
 
 async def main():
-    chamber = await WKL100.create('139.6.69.109')
+    chamber = await WKL100.create('192.168.1.187')
 
     # read number of operating hours
     print(f'Chamber Runtime = {await chamber.get_runtime():.2f}h')

@@ -13,7 +13,7 @@ import asyncio
 from WKL100 import WKL100
 
 async def main():
-    chamber = await WKL100.create('192.168.1.23')
+    chamber = await WKL100.create('192.168.1.187')
 
     # read temperature
     print(f'{await chamber.get_temperature():.2f}°C')
@@ -27,3 +27,7 @@ async def main():
 
 asyncio.run(main())
 ```
+
+## Documentation of the Modbus Interface
+
+There is no official documentation of the Modbus Interface as fare as I can tell, but I wrote down my best guess in [Modbus_Docu.md](Modbus_Docu.md)
