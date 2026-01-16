@@ -13,7 +13,7 @@ import asyncio
 from WKL100 import WKL100
 
 async def main():
-    chamber = await WKL100.create('192.168.1.187')
+    chamber = await WKL100.create('192.168.21.109')
 
     # read temperature
     print(f'{await chamber.get_temperature():.2f}°C')
